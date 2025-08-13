@@ -19,7 +19,7 @@ import AdminRoute from "@/components/auth/admin-route"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { useAuth } from "@/components/providers/auth-provider"
-import { AlertCircle, CheckCircle, Save, Eye, X, Calendar, Clock, MapPin, Users, DollarSign, Video } from "lucide-react"
+import { AlertCircle, CheckCircle, Save, Eye, X, Calendar, MapPin, Video } from "lucide-react"
 
 export default function NewWorkshopPage() {
   const [loading, setLoading] = useState(false)
@@ -199,7 +199,7 @@ export default function NewWorkshopPage() {
         meeting_link: formData.meetingLink || null
       }
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('workshops')
         .insert([workshopData])
         .select()
@@ -213,7 +213,8 @@ export default function NewWorkshopPage() {
           router.push('/admin/content/workshops')
         }, 2000)
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Workshop creation error:', err)
       setMessage({ type: 'error', text: 'An unexpected error occurred' })
     } finally {
       setLoading(false)

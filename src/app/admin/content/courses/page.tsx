@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -179,7 +179,7 @@ export default function AdminCoursesPage() {
   }
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, any> = {
+    const variants: Record<string, { variant: string; color: string }> = {
       published: { variant: "default", color: "bg-green-100 text-green-800" },
       draft: { variant: "secondary", color: "bg-gray-100 text-gray-800" },
       scheduled: { variant: "default", color: "bg-blue-100 text-blue-800" }
@@ -195,7 +195,7 @@ export default function AdminCoursesPage() {
   }
 
   const getLevelBadge = (level: string) => {
-    const variants: Record<string, any> = {
+    const variants: Record<string, { color: string }> = {
       Beginner: { color: "bg-green-100 text-green-800" },
       Intermediate: { color: "bg-yellow-100 text-yellow-800" },
       Advanced: { color: "bg-red-100 text-red-800" }

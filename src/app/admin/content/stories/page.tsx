@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -130,10 +130,10 @@ export default function AdminStoriesPage() {
   }
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, any> = {
-      published: { variant: "default", color: "bg-green-100 text-green-800" },
-      draft: { variant: "secondary", color: "bg-gray-100 text-gray-800" },
-      scheduled: { variant: "default", color: "bg-blue-100 text-blue-800" }
+    const variants: Record<string, { color: string }> = {
+      published: { color: "bg-green-100 text-green-800" },
+      draft: { color: "bg-gray-100 text-gray-800" },
+      scheduled: { color: "bg-blue-100 text-blue-800" }
     }
     
     const config = variants[status] || variants.draft

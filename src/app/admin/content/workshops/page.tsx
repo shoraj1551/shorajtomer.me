@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -180,11 +180,11 @@ export default function AdminWorkshopsPage() {
   }
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, any> = {
-      scheduled: { variant: "default", color: "bg-blue-100 text-blue-800" },
-      draft: { variant: "secondary", color: "bg-gray-100 text-gray-800" },
-      completed: { variant: "default", color: "bg-green-100 text-green-800" },
-      cancelled: { variant: "default", color: "bg-red-100 text-red-800" }
+    const variants: Record<string, { color: string }> = {
+      scheduled: { color: "bg-blue-100 text-blue-800" },
+      draft: { color: "bg-gray-100 text-gray-800" },
+      completed: { color: "bg-green-100 text-green-800" },
+      cancelled: { color: "bg-red-100 text-red-800" }
     }
     
     const config = variants[status] || variants.draft
@@ -197,7 +197,7 @@ export default function AdminWorkshopsPage() {
   }
 
   const getTypeBadge = (type: string) => {
-    const variants: Record<string, any> = {
+    const variants: Record<string, { color: string }> = {
       "In-Person": { color: "bg-purple-100 text-purple-800" },
       "Online": { color: "bg-green-100 text-green-800" },
       "Hybrid": { color: "bg-blue-100 text-blue-800" }

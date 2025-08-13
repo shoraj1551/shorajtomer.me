@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -123,10 +123,10 @@ export default function AdminUsersPage() {
   }
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, any> = {
-      active: { variant: "default", color: "bg-green-100 text-green-800" },
-      premium: { variant: "default", color: "bg-purple-100 text-purple-800" },
-      inactive: { variant: "secondary", color: "bg-gray-100 text-gray-800" }
+    const variants: Record<string, { color: string }> = {
+      active: { color: "bg-green-100 text-green-800" },
+      premium: { color: "bg-purple-100 text-purple-800" },
+      inactive: { color: "bg-gray-100 text-gray-800" }
     }
     
     const config = variants[status] || variants.active

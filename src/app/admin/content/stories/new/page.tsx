@@ -19,7 +19,7 @@ import AdminRoute from "@/components/auth/admin-route"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { useAuth } from "@/components/providers/auth-provider"
-import { AlertCircle, CheckCircle, Save, Eye, X, BookOpen, Clock } from "lucide-react"
+import { AlertCircle, CheckCircle, Save, Eye, X, Clock } from "lucide-react"
 
 export default function NewStoryPage() {
   const [loading, setLoading] = useState(false)
@@ -124,7 +124,7 @@ export default function NewStoryPage() {
         word_count: formData.content.trim().split(/\s+/).length
       }
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('stories')
         .insert([storyData])
         .select()
@@ -138,7 +138,8 @@ export default function NewStoryPage() {
           router.push('/admin/content/stories')
         }, 2000)
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Story creation error:', err)
       setMessage({ type: 'error', text: 'An unexpected error occurred' })
     } finally {
       setLoading(false)

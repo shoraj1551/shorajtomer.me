@@ -110,7 +110,7 @@ export default function NewBlogPage() {
         featured_image: formData.featuredImage || null
       }
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('blogs')
         .insert([blogData])
         .select()
@@ -124,7 +124,8 @@ export default function NewBlogPage() {
           router.push('/admin/content/blogs')
         }, 2000)
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Blog creation error:', err)
       setMessage({ type: 'error', text: 'An unexpected error occurred' })
     } finally {
       setLoading(false)
@@ -132,7 +133,10 @@ export default function NewBlogPage() {
   }
 
   const handleSaveDraft = async () => {
-    await handleSubmit(new Event('submit') as any)
+    const fakeEvent = {
+      preventDefault: () => {},
+    } as React.FormEvent
+    await handleSubmit(fakeEvent)
   }
 
   return (

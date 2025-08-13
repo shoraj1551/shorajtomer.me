@@ -19,7 +19,7 @@ import AdminRoute from "@/components/auth/admin-route"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { useAuth } from "@/components/providers/auth-provider"
-import { AlertCircle, CheckCircle, Save, Eye, X, FileText, Clock, Target, Users, TrendingUp, Plus, Minus } from "lucide-react"
+import { AlertCircle, CheckCircle, Save, Eye, X, FileText, Plus, Minus } from "lucide-react"
 
 interface Question {
   id: string
@@ -127,7 +127,7 @@ export default function NewTestPage() {
     setQuestions(questions.filter(q => q.id !== questionId))
   }
 
-  const updateQuestion = (questionId: string, field: keyof Question, value: any) => {
+  const updateQuestion = (questionId: string, field: keyof Question, value: string | number | string[]) => {
     setQuestions(questions.map(q => 
       q.id === questionId ? { ...q, [field]: value } : q
     ))
@@ -176,7 +176,7 @@ export default function NewTestPage() {
         creator_id: user.id
       }
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('tests')
         .insert([testData])
         .select()
@@ -190,7 +190,8 @@ export default function NewTestPage() {
           router.push('/admin/content/tests')
         }, 2000)
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Test creation error:', err)
       setMessage({ type: 'error', text: 'An unexpected error occurred' })
     } finally {
       setLoading(false)
@@ -324,7 +325,7 @@ export default function NewTestPage() {
                           <Label>Question Type</Label>
                           <Select
                             value={question.type}
-                            onValueChange={(value: any) => updateQuestion(question.id, 'type', value)}
+                            onValueChange={(value: string) => updateQuestion(question.id, 'type', value)}
                           >
                             <SelectTrigger>
                               <SelectValue />

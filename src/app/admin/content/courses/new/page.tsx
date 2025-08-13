@@ -19,7 +19,7 @@ import AdminRoute from "@/components/auth/admin-route"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { useAuth } from "@/components/providers/auth-provider"
-import { AlertCircle, CheckCircle, Save, Eye, X, BookOpen, Clock, DollarSign, Users, PlayCircle } from "lucide-react"
+import { AlertCircle, CheckCircle, Save, Eye, X } from "lucide-react"
 
 export default function NewCoursePage() {
   const [loading, setLoading] = useState(false)
@@ -168,7 +168,7 @@ export default function NewCoursePage() {
         intro_video_url: formData.introVideo || null
       }
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('courses')
         .insert([courseData])
         .select()
@@ -182,7 +182,8 @@ export default function NewCoursePage() {
           router.push('/admin/content/courses')
         }, 2000)
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Course creation error:', err)
       setMessage({ type: 'error', text: 'An unexpected error occurred' })
     } finally {
       setLoading(false)

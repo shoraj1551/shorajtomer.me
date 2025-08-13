@@ -12,7 +12,6 @@ import {
   TrendingUp,
   Activity,
   Eye,
-  ShoppingCart,
   MessageCircle,
   Settings
 } from "lucide-react"

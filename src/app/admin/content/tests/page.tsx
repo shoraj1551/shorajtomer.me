@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import React, { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -26,8 +26,7 @@ import {
   Users,
   Target,
   TrendingUp,
-  CheckCircle,
-  AlertCircle
+  CheckCircle
 } from "lucide-react"
 
 // Mock data - In real app, this would come from Supabase
@@ -160,10 +159,10 @@ export default function AdminTestsPage() {
   }
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, any> = {
-      published: { variant: "default", color: "bg-green-100 text-green-800" },
-      draft: { variant: "secondary", color: "bg-gray-100 text-gray-800" },
-      scheduled: { variant: "default", color: "bg-blue-100 text-blue-800" }
+    const variants: Record<string, { color: string }> = {
+      published: { color: "bg-green-100 text-green-800" },
+      draft: { color: "bg-gray-100 text-gray-800" },
+      scheduled: { color: "bg-blue-100 text-blue-800" }
     }
     
     const config = variants[status] || variants.draft
@@ -176,7 +175,7 @@ export default function AdminTestsPage() {
   }
 
   const getDifficultyBadge = (difficulty: string) => {
-    const variants: Record<string, any> = {
+    const variants: Record<string, { color: string }> = {
       Beginner: { color: "bg-green-100 text-green-800" },
       Intermediate: { color: "bg-yellow-100 text-yellow-800" },
       Advanced: { color: "bg-red-100 text-red-800" }
@@ -192,7 +191,7 @@ export default function AdminTestsPage() {
   }
 
   const getTypeBadge = (type: string) => {
-    const variants: Record<string, any> = {
+    const variants: Record<string, { color: string; icon: React.ComponentType<{ className?: string }> }> = {
       quiz: { color: "bg-blue-100 text-blue-800", icon: FileText },
       assessment: { color: "bg-purple-100 text-purple-800", icon: Target },
       challenge: { color: "bg-orange-100 text-orange-800", icon: TrendingUp },
