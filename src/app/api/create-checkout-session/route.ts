@@ -1,10 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { stripe } from '@/lib/stripe'
 import { headers } from 'next/headers'
+import Stripe from 'stripe'
 
 export async function POST(request: NextRequest) {
   try {
+    // Validate environment variables first
+    const requiredEnvVars = {
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    }
+    
+    const missingEnvVars = Object.entries(requiredEnvVars)
+      .filter(([_, value]) => !value)
+      .map(([key]) => key)
+    
+    if (missingEnvVars.length > 0) {
+      console.error('Missing required environment variables:', missingEnvVars)
+      return NextResponse.json({ 
+        error: 'Server configuration error',
+        missingVars: missingEnvVars 
+      }, { status: 500 })
+    }
+    
+    // Initialize Stripe
+    const stripe = new Stripe(requiredEnvVars.STRIPE_SECRET_KEY!, {
+      apiVersion: '2025-07-30.basil',
+      typescript: true,
+    })
+    
     const supabase = await createClient()
     const headersList = await headers()
     const origin = headersList.get('origin') || process.env.NEXT_PUBLIC_SITE_URL

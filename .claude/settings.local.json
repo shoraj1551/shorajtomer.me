@@ -9,7 +9,15 @@
       "Bash(git add:*)",
       "Bash(git rm:*)",
       "Bash(npm run build:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npx next build:*)",
+      "Bash(grep:*)",
+      "Bash(npm run lint)",
+      "Bash(npx vercel:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)",
+      "Bash(powershell:*)",
+      "Bash(timeout 180 npm run build)"
     ],
     "deny": []
   }
