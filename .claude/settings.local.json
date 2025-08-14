@@ -17,8 +17,10 @@
       "Bash(npm run dev:*)",
       "Bash(npm install:*)",
       "Bash(powershell:*)",
-      "Bash(timeout 180 npm run build)"
+      "Bash(timeout 180 npm run build)",
+      "Bash(npm ls:*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "acceptEdits"
   }
 }
