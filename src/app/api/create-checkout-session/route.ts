@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { headers } from 'next/headers'
 import Stripe from 'stripe'
+import { createCheckoutSessionSchema } from '@/lib/validations/checkout.schema'
+import { handleApiError, validateRequest, AppError } from '@/lib/errors'
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,25 +13,25 @@ export async function POST(request: NextRequest) {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     }
-    
+
     const missingEnvVars = Object.entries(requiredEnvVars)
       .filter(([_, value]) => !value)
       .map(([key]) => key)
-    
+
     if (missingEnvVars.length > 0) {
       console.error('Missing required environment variables:', missingEnvVars)
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Server configuration error',
-        missingVars: missingEnvVars 
+        missingVars: missingEnvVars
       }, { status: 500 })
     }
-    
+
     // Initialize Stripe
     const stripe = new Stripe(requiredEnvVars.STRIPE_SECRET_KEY!, {
       apiVersion: '2025-07-30.basil',
       typescript: true,
     })
-    
+
     const supabase = await createClient()
     const headersList = await headers()
     const origin = headersList.get('origin') || process.env.NEXT_PUBLIC_SITE_URL
@@ -41,18 +43,53 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      throw new AppError(401, 'Unauthorized')
     }
 
-    const body = await request.json()
+    // Validate request body
+    const body = await validateRequest(request, createCheckoutSessionSchema)
     const { items, metadata } = body
 
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return NextResponse.json({ error: 'Invalid items' }, { status: 400 })
+    // Verify prices against database
+    for (const item of items) {
+      let dbPrice: number | null = null
+
+      // Fetch actual price from database based on item type
+      if (item.type === 'course') {
+        const { data } = await supabase
+          .from('courses')
+          .select('price')
+          .eq('id', item.id)
+          .single()
+        dbPrice = data?.price
+      } else if (item.type === 'workshop') {
+        const { data } = await supabase
+          .from('workshops')
+          .select('price')
+          .eq('id', item.id)
+          .single()
+        dbPrice = data?.price
+      } else if (item.type === 'test') {
+        const { data } = await supabase
+          .from('tests')
+          .select('price')
+          .eq('id', item.id)
+          .single()
+        dbPrice = data?.price
+      }
+
+      // Verify price matches
+      if (dbPrice === null) {
+        throw new AppError(404, `Item not found: ${item.id}`)
+      }
+
+      if (Math.abs(dbPrice - item.price) > 0.01) {
+        throw new AppError(400, `Price mismatch for item ${item.id}. Expected ${dbPrice}, got ${item.price}`)
+      }
     }
 
     // Create line items for Stripe
-    const lineItems = items.map((item: { name: string; price: number; id: string; type: string; description?: string; images?: string[]; quantity?: number }) => ({
+    const lineItems = items.map((item) => ({
       price_data: {
         currency: 'usd',
         product_data: {
@@ -85,7 +122,7 @@ export async function POST(request: NextRequest) {
         .from('enrollments')
         .insert({
           user_id: user.id,
-          item_type: item.type, // 'course', 'workshop', 'test'
+          item_type: item.type,
           item_id: item.id,
           payment_status: 'pending',
           payment_id: session.id,
@@ -95,10 +132,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ sessionId: session.id, url: session.url })
   } catch (error: unknown) {
-    console.error('Error creating checkout session:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleApiError(error)
   }
 }
