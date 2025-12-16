@@ -1,10 +1,18 @@
 # Shoraj Tomer - Personal Portfolio & Educational Platform
 
-A modern, full-stack personal portfolio website featuring educational content, e-commerce functionality, and comprehensive content management. Built with Next.js 14+, Supabase, and Stripe.
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/shorajtomer/shorajtomer.me)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-![Portfolio Banner](https://via.placeholder.com/1200x400/0f172a/ffffff?text=Shoraj+Tomer+Portfolio)
+A modern, full-stack personal portfolio website featuring educational content, e-commerce functionality, and comprehensive content management. Built with Next.js 15, Supabase, Stripe, and advanced security features.
 
 ## ✨ Features
+
+### 🔒 Security & Infrastructure (v2.0.0)
+- **Role-Based Access Control (RBAC)** - Database-driven user roles (user, instructor, admin)
+- **Input Validation** - Zod schemas for all API endpoints with price verification
+- **Error Tracking** - Sentry integration for production monitoring
+- **Optimized Database** - 30+ indexes for improved query performance
+- **API-Level Authorization** - Centralized security with `requireAdmin()` and `requireInstructorOrAdmin()`
 
 ### 🏠 Personal Branding
 - **Modern Design** - Clean, responsive design with professional aesthetics
@@ -13,7 +21,7 @@ A modern, full-stack personal portfolio website featuring educational content, e
 - **Contact Integration** - Easy ways to get in touch
 
 ### 📚 Educational Platform
-- **Blog System** - Technical articles and insights with categories and tags
+- **Blog System** - Technical articles with rich text editor (TipTap), categories, and tags
 - **Story Collection** - Personal narratives organized by genres
 - **Online Courses** - Comprehensive courses with video content and progress tracking
 - **Interactive Workshops** - Live sessions with calendar integration and attendee management
@@ -25,45 +33,44 @@ A modern, full-stack personal portfolio website featuring educational content, e
 - **Shopping Cart** - Persistent cart with localStorage
 - **Enrollment System** - Automatic enrollment after successful payments
 - **Webhook Integration** - Real-time payment status updates
+- **Price Verification** - Server-side price validation against database
 
 ### 👤 User Management
 - **Authentication** - Secure login/signup with Supabase Auth
 - **User Dashboard** - Personal progress tracking and account management
-- **Profile System** - Customizable user profiles
+- **Profile System** - Customizable user profiles with role management
 - **Progress Tracking** - Course completion and test scores
 
 ### 🛠 Admin Panel & CMS
 - **Content Management** - Full CRUD operations for all content types
-- **User Administration** - User management and analytics
+- **Rich Text Editor** - TipTap integration with formatting toolbar
+- **User Administration** - Role management UI for assigning user/instructor/admin roles
 - **Analytics Dashboard** - Revenue tracking and engagement metrics
-- **Role-based Access** - Secure admin-only areas
-
-### 🎬 Media Integration
-- **YouTube Channel** - Embedded videos and channel statistics
-- **Image Management** - Optimized image handling and storage
-- **Video Content** - Course and workshop video integration
+- **Role-based Access** - Secure admin-only areas with database-driven permissions
 
 ## 🚀 Tech Stack
 
 ### Frontend
-- **[Next.js 14+](https://nextjs.org/)** - React framework with App Router
+- **[Next.js 15](https://nextjs.org/)** - React framework with App Router and Turbopack
 - **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
 - **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first styling
 - **[Shadcn/ui](https://ui.shadcn.com/)** - Beautiful UI components
 - **[Radix UI](https://www.radix-ui.com/)** - Accessible primitives
+- **[TipTap](https://tiptap.dev/)** - Rich text editor for content creation
 
-### Backend
+### Backend & Services
 - **[Supabase](https://supabase.com/)** - Backend-as-a-Service
-  - PostgreSQL database
-  - Authentication
-  - Row Level Security (RLS)
+  - PostgreSQL database with optimized indexes
+  - Authentication with role-based access control
+  - API-level authorization
   - Real-time subscriptions
-- **[Stripe](https://stripe.com/)** - Payment processing
+- **[Stripe](https://stripe.com/)** - Payment processing with webhook integration
+- **[Sentry](https://sentry.io/)** - Error tracking and monitoring
 - **[Vercel](https://vercel.com/)** - Deployment and hosting
 
 ### Development Tools
+- **[Zod](https://zod.dev/)** - TypeScript-first schema validation
 - **ESLint** - Code linting and formatting
-- **TypeScript** - Static type checking
 - **Prettier** - Code formatting
 
 ## 📦 Installation
