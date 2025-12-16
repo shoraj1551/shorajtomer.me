@@ -16,9 +16,13 @@ SET role = 'user'
 WHERE role IS NULL;
 
 -- Set specific admin users (update these emails as needed)
+-- Note: profiles table doesn't have email column, need to join with auth.users
 UPDATE public.profiles 
 SET role = 'admin' 
-WHERE email IN ('shoraj@shorajtomer.me', 'admin@shorajtomer.me');
+WHERE id IN (
+  SELECT id FROM auth.users 
+  WHERE email IN ('shoraj@shorajtomer.me', 'admin@shorajtomer.me')
+);
 
 -- Drop old category policy
 DROP POLICY IF EXISTS "Only admin can manage categories" ON public.categories;
