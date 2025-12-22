@@ -3,24 +3,24 @@ import { Badge } from "@/components/ui/badge"
 
 export default function About() {
   const skills = [
-    "Education", "Content Creation", "Storytelling", "Workshops", 
+    "Education", "Content Creation", "Storytelling", "Workshops",
     "Course Development", "Public Speaking", "Writing", "Mentoring"
   ]
 
   const achievements = [
     {
       title: "Educational Impact",
-      description: "Taught and mentored hundreds of students",
+      description: "Mentored hundreds of students in technology and personal growth.",
       year: "2020-Present"
     },
     {
       title: "Content Creation",
-      description: "Published numerous articles and stories",
+      description: "Published numerous articles and stories across various platforms.",
       year: "2019-Present"
     },
     {
       title: "Workshop Facilitation",
-      description: "Conducted workshops on various topics",
+      description: "Conducted workshops on effective learning and storytelling.",
       year: "2021-Present"
     },
   ]
@@ -45,20 +45,18 @@ export default function About() {
             </CardHeader>
             <CardContent className="prose prose-lg max-w-none">
               <p>
-                Welcome to my digital space! I&apos;m Shoraj Tomer, a passionate educator and storyteller 
-                who believes in the transformative power of knowledge and creativity. My journey began 
-                with a simple belief: everyone deserves access to quality education and inspiring content.
+                Welcome to my digital space! I&apos;m Shoraj Tomer, a passionate educator and storyteller
+                who believes in the transformative power of knowledge. My journey began
+                with a simple belief: effective communication can unlock potential.
               </p>
               <p>
-                Through this platform, I share my knowledge, experiences, and stories with learners 
-                from all walks of life. Whether it&apos;s through in-depth courses, engaging workshops, 
-                thought-provoking blog posts, or creative stories, my goal is to inspire, educate, 
-                and empower individuals to reach their full potential.
+                I help individuals and organizations share their knowledge through engaging content.
+                Whether it&apos;s through structured courses, interactive workshops, or compelling stories,
+                my goal is to make learning accessible and inspiring.
               </p>
               <p>
-                I believe that learning should be accessible, engaging, and meaningful. That&apos;s why 
-                I&apos;ve created this comprehensive platform that offers various ways to learn and grow, 
-                from traditional educational content to creative storytelling and interactive experiences.
+                On this site, you can explore my professional portfolio, read my latest thoughts,
+                and see how we can collaborate.
               </p>
             </CardContent>
           </Card>
@@ -70,7 +68,7 @@ export default function About() {
             <CardHeader>
               <CardTitle className="text-2xl">Skills & Expertise</CardTitle>
               <CardDescription>
-                Areas where I can help you grow and learn
+                Areas where I bring value to projects
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -89,9 +87,9 @@ export default function About() {
         <section>
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Key Achievements</CardTitle>
+              <CardTitle className="text-2xl">Key Milestones</CardTitle>
               <CardDescription>
-                Milestones in my educational and creative journey
+                Highlights from my journey
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -118,15 +116,12 @@ export default function About() {
             </CardHeader>
             <CardContent className="prose prose-lg max-w-none">
               <p>
-                To create a world where learning is accessible, engaging, and transformative. 
-                Through this platform, I aim to:
+                To empower others through education and storytelling. I strive to:
               </p>
               <ul>
-                <li>Provide high-quality educational content that makes complex topics understandable</li>
-                <li>Tell stories that inspire, entertain, and teach valuable life lessons</li>
-                <li>Offer interactive learning experiences through courses and workshops</li>
-                <li>Build a community of lifelong learners who support each other&apos;s growth</li>
-                <li>Make education affordable and accessible to everyone, regardless of background</li>
+                <li>Simplify complex concepts through clear communication</li>
+                <li>Inspire audiences through creative narratives</li>
+                <li>Foster a community of continuous learners</li>
               </ul>
             </CardContent>
           </Card>
