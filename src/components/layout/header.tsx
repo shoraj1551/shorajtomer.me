@@ -1,28 +1,41 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Github, Linkedin, Twitter, Youtube } from "lucide-react"
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Projects", href: "/projects" },
-  { name: "Blog", href: "/blog" },
+  { name: "Work", href: "/projects" }, // Work maps to /projects
+  { name: "Writing", href: "/blog" }, // Writing maps to /blog
   { name: "Contact", href: "/contact" },
 ]
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
-    <header className="bg-white shadow-sm border-b sticky top-0 z-50">
+    <header
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${isScrolled
+          ? "bg-white/80 backdrop-blur-md shadow-sm py-2"
+          : "bg-transparent py-4"
+        }`}
+    >
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-gray-900">
+            <Link href="/" className="text-2xl font-bold text-gray-900 tracking-tight">
               Shoraj Tomer
             </Link>
           </div>
@@ -33,17 +46,23 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-gray-500 hover:text-gray-900 flex items-center"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
               >
                 {item.name}
               </Link>
             ))}
           </div>
 
-          <div className="hidden md:flex md:items-center md:space-x-4">
-            <Button asChild>
-              <Link href="/contact">Get in Touch</Link>
-            </Button>
+          <div className="hidden md:flex md:items-center space-x-4">
+            <Link href="https://github.com/shorajtomer" target="_blank" className="text-gray-400 hover:text-gray-900 transition-colors">
+              <Github className="h-5 w-5" />
+            </Link>
+            <Link href="https://linkedin.com/in/shorajtomer" target="_blank" className="text-gray-400 hover:text-blue-700 transition-colors">
+              <Linkedin className="h-5 w-5" />
+            </Link>
+            <Link href="https://twitter.com/shorajtomer" target="_blank" className="text-gray-400 hover:text-blue-400 transition-colors">
+              <Twitter className="h-5 w-5" />
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -60,23 +79,18 @@ export default function Header() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden">
-            <div className="space-y-1 pb-3 pt-2">
+          <div className="md:hidden mt-4 bg-white/95 backdrop-blur-md rounded-lg shadow-lg p-4 border border-gray-100">
+            <div className="space-y-1">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block py-2 text-base font-medium text-gray-500 hover:text-gray-900"
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 rounded-md"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
-              <div className="mt-4">
-                <Button asChild className="w-full">
-                  <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Get in Touch</Link>
-                </Button>
-              </div>
             </div>
           </div>
         )}

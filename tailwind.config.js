@@ -62,9 +62,29 @@ module.exports = {
           '0%': { opacity: 0 },
           '100%': { opacity: 1 },
         },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        fadeInLeft: {
+          '0%': { opacity: 0, transform: 'translateX(-20px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
+        fadeInRight: {
+          '0%': { opacity: 0, transform: 'translateX(20px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
       },
       animation: {
-        fadeIn: 'fadeIn 0.5s ease-in-out',
+        fadeIn: 'fadeIn 0.5s ease-out forwards',
+        slideUp: 'slideUp 0.5s ease-out forwards',
+        float: 'float 6s ease-in-out infinite',
+        fadeInLeft: 'fadeInLeft 0.8s ease-out forwards',
+        fadeInRight: 'fadeInRight 0.8s ease-out forwards',
       },
     },
   },
@@ -72,6 +92,7 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('@tailwindcss/aspect-ratio'),
+    require("tailwindcss-animate"),
   ],
-  darkMode: 'class', // Enable dark mode with .dark class
+  darkMode: 'class',
 };
