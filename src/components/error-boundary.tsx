@@ -5,6 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { AlertTriangle } from 'lucide-react'
 
+// Declare Sentry interface on window
+interface WindowWithSentry extends Window {
+    Sentry?: {
+        captureException: (error: Error, options?: Record<string, unknown>) => void
+    }
+}
+
 interface Props {
     children: ReactNode
 }
@@ -28,8 +35,8 @@ export class ErrorBoundary extends Component<Props, State> {
         console.error('Error caught by boundary:', error, errorInfo)
 
         // Log to Sentry if available
-        if (typeof window !== 'undefined' && (window as any).Sentry) {
-            (window as any).Sentry.captureException(error, {
+        if (typeof window !== 'undefined' && (window as WindowWithSentry).Sentry) {
+            (window as WindowWithSentry).Sentry?.captureException(error, {
                 contexts: {
                     react: {
                         componentStack: errorInfo.componentStack,
@@ -50,7 +57,7 @@ export class ErrorBoundary extends Component<Props, State> {
                             </div>
                             <CardTitle>Something went wrong</CardTitle>
                             <CardDescription>
-                                We're sorry, but something unexpected happened. Please try refreshing the page.
+                                We&apos;re sorry, but something unexpected happened. Please try refreshing the page.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">

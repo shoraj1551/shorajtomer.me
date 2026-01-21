@@ -13,7 +13,7 @@ export abstract class BaseService<T> {
     /**
      * Get all records with optional filters
      */
-    async getAll(filters?: Record<string, any>) {
+    async getAll(filters?: Record<string, unknown>) {
         try {
             let query = this.supabase.from(this.tableName).select('*')
 
@@ -126,7 +126,7 @@ export abstract class BaseService<T> {
     /**
      * Count records with optional filters
      */
-    async count(filters?: Record<string, any>) {
+    async count(filters?: Record<string, unknown>) {
         try {
             let query = this.supabase
                 .from(this.tableName)

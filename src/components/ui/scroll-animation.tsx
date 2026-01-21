@@ -7,7 +7,7 @@ interface ScrollAnimationProps {
     children: React.ReactNode
     className?: string
     animation?: "animate-slideUp" | "animate-fadeIn" | "animate-fadeInLeft" | "animate-fadeInRight"
-    delay?: string
+    delay: string
 }
 
 export function ScrollAnimation({

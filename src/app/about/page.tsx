@@ -10,7 +10,7 @@ export default function About() {
       {/* 1. OPENING - WHY THIS PAGE EXISTS */}
       <section className="py-32 px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <ScrollAnimation animation="animate-fadeIn">
+          <ScrollAnimation animation="animate-fadeIn" delay="0ms">
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 mb-8 leading-tight">
               Builder. Problem Solver. Teacher.
             </h1>
@@ -55,7 +55,7 @@ export default function About() {
       {/* 3. HOW I APPROACH PROBLEMS */}
       <section className="py-32 bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ScrollAnimation className="mb-16 text-center">
+          <ScrollAnimation className="mb-16 text-center" delay="0ms">
             <h2 className="text-sm font-bold text-blue-600 uppercase tracking-widest mb-4">Principles</h2>
             <h3 className="text-3xl font-bold text-gray-900">How I approach data & education</h3>
           </ScrollAnimation>
@@ -79,9 +79,9 @@ export default function About() {
 
       {/* 4. WHAT I'M WORKING ON NOW */}
       <section className="py-32 bg-white container mx-auto px-4 max-w-4xl">
-        <ScrollAnimation className="flex flex-col md:flex-row gap-16 items-start">
+        <ScrollAnimation className="flex flex-col md:flex-row gap-16 items-start" delay="0ms">
           <div className="md:w-1/3">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">What I'm working on now</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">What I&apos;m working on now</h2>
             <p className="text-gray-500">Connecting dots between data, AI, and education.</p>
           </div>
           <div className="md:w-2/3 space-y-8">
@@ -105,10 +105,10 @@ export default function About() {
       {/* 5. BEYOND WORK */}
       <section className="py-24 bg-gray-900 text-white text-center">
         <div className="max-w-2xl mx-auto px-4">
-          <ScrollAnimation>
+          <ScrollAnimation delay="0ms">
             <h2 className="text-sm font-bold text-blue-400 uppercase tracking-widest mb-6">Beyond Work</h2>
             <p className="text-xl text-gray-300 leading-relaxed mb-12">
-              When I'm not coding or teaching, I'm usually reading science fiction, writing stories, or deep-diving into a math or history topic. I believe that being a lifelong student is the key to being a good teacher.
+              When I&apos;m not coding or teaching, I&apos;m usually reading science fiction, writing stories, or deep-diving into a math or history topic. I believe that being a lifelong student is the key to being a good teacher.
             </p>
           </ScrollAnimation>
         </div>
@@ -117,7 +117,7 @@ export default function About() {
       {/* 6. CONNECT & VERIFY */}
       <section className="py-24 bg-white border-b border-gray-100">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <ScrollAnimation>
+          <ScrollAnimation delay="0ms">
             <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-8">Connect & Verify</h2>
             <div className="flex flex-wrap justify-center gap-8">
               {[
@@ -147,9 +147,9 @@ export default function About() {
       {/* 7. ENDING - SOFT INVITATION */}
       <section className="py-32 bg-white text-center">
         <div className="max-w-xl mx-auto px-4">
-          <ScrollAnimation>
+          <ScrollAnimation delay="0ms">
             <p className="text-2xl font-serif text-gray-900 italic mb-8">
-              "If you care about learning, systems, and building things that last — let’s talk."
+              &quot;If you care about learning, systems, and building things that last — let&apos;s talk.&quot;
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Button size="lg" className="h-14 px-10 text-lg rounded-full" asChild>

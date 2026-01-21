@@ -28,13 +28,13 @@ export default function ContactPage() {
             <div className="grid lg:grid-cols-2 gap-16 items-start">
 
                 {/* Contact Info */}
-                <ScrollAnimation animation="animate-fadeIn">
+                <ScrollAnimation animation="animate-fadeIn" delay="0ms">
                     <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl mb-8 leading-tight">
-                        Let's build something meaningful.
+                        Let&apos;s build something meaningful.
                     </h1>
                     <p className="text-xl text-gray-500 mb-12 leading-relaxed font-light">
-                        I'm always open to discussing new projects, teaching opportunities,
-                        or technical challenges. If you have an idea that needs a system, let's talk.
+                        I&apos;m always open to discussing new projects, teaching opportunities,
+                        or technical challenges. If you have an idea that needs a system, let&apos;s talk.
                     </p>
 
                     <div className="space-y-6">
@@ -84,7 +84,7 @@ export default function ContactPage() {
                                     </div>
                                     <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
                                     <p className="text-gray-500 mb-8 max-w-xs mx-auto">
-                                        Thank you for reaching out. I'll get back to you within 24 hours.
+                                        Thank you for reaching out. I&apos;ll get back to you within 24 hours.
                                     </p>
                                     <Button variant="outline" onClick={() => setIsSent(false)} className="rounded-full">
                                         Send Another Message

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { ZodError } from 'zod'
+import { ZodError, ZodSchema } from 'zod'
 
 /**
  * Custom error class for application errors
@@ -64,7 +64,7 @@ export function handleApiError(error: unknown) {
  */
 export async function validateRequest<T>(
     request: Request,
-    schema: any
+    schema: ZodSchema<T>
 ): Promise<T> {
     try {
         const body = await request.json()

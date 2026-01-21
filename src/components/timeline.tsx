@@ -8,11 +8,11 @@ interface TimelineItemProps {
     title: string
     description: string
     align?: "left" | "right"
-    delay?: string
+    delay: string
     isLast?: boolean
 }
 
-function TimelineItem({ year, title, description, align = "left", delay, isLast }: TimelineItemProps) {
+function TimelineItem({ year, title, description, align = "left", delay = "0ms", isLast }: TimelineItemProps) {
     return (
         <div className={cn("flex w-full items-start justify-center relative", isLast ? "" : "pb-12")}>
             {/* Center Line (Static for now, could be animated height) */}

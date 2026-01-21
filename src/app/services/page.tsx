@@ -1,42 +1,44 @@
-import { Metadata } from "next";
+"use client"
+
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Users, PenTool, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-    title: "Services | Shoraj Tomer",
-    description: "Educational consulting, content strategy, and workshop facilitation services.",
-};
-
-const services = [
-    {
-        title: "Educational Consulting",
-        description: "Curriculum design and educational technology strategy for schools and ed-tech companies.",
-        icon: BookOpen,
-        features: ["Curriculum Development", "LMS Implementation", "EdTech Strategy"]
-    },
-    {
-        title: "Workshop Facilitation",
-        description: "Interactive workshops on storytelling, technology, and personal growth.",
-        icon: Users,
-        features: ["Corporate Training", "Student Workshops", "Teacher Training"]
-    },
-    {
-        title: "Content Strategy",
-        description: "Helping brands measure and improve their educational content impact.",
-        icon: PenTool,
-        features: ["Content Audits", "Editorial Strategy", "Technical Writing"]
-    },
-    {
-        title: "Speaking",
-        description: "Keynote speeches on the future of education and digital storytelling.",
-        icon: Mic,
-        features: ["Keynotes", "Panels", "Podcasts"]
-    }
-];
+import { supabase } from "@/lib/supabase";
+import { ServiceService } from "@/services/service.service";
+import { Service } from "@/types";
 
 export default function ServicesPage() {
+    const [services, setServices] = useState<Service[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const service = new ServiceService(supabase);
+                const data = await service.getActive();
+                setServices(data);
+            } catch (error) {
+                console.error("Failed to fetch services:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchServices();
+    }, []);
+
+    // Helper to get icon component
+    const getIcon = (name?: string) => {
+        switch (name) {
+            case 'Users': return Users;
+            case 'PenTool': return PenTool;
+            case 'Mic': return Mic;
+            // Add more cases as needed or use a robust mapping
+            default: return BookOpen;
+        }
+    };
+
     return (
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -48,30 +50,47 @@ export default function ServicesPage() {
                 </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2">
-                {services.map((service, index) => (
-                    <Card key={index} className="hover:shadow-lg transition-shadow">
-                        <CardHeader>
-                            <service.icon className="h-10 w-10 text-blue-600 mb-4" />
-                            <CardTitle className="text-2xl">{service.title}</CardTitle>
-                            <CardDescription className="text-base">{service.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <ul className="space-y-2 mb-6">
-                                {service.features.map((feature, idx) => (
-                                    <li key={idx} className="flex items-center text-gray-600">
-                                        <div className="h-1.5 w-1.5 rounded-full bg-blue-500 mr-2" />
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                            <Button variant="outline" asChild className="w-full">
-                                <Link href="/contact">Inquire Now</Link>
-                            </Button>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+            {loading ? (
+                <div className="grid gap-8 md:grid-cols-2">
+                    {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="h-64 bg-gray-50 rounded-xl animate-pulse"></div>
+                    ))}
+                </div>
+            ) : (
+                <div className="grid gap-8 md:grid-cols-2">
+                    {services.length === 0 ? (
+                        <div className="col-span-2 text-center text-gray-500 py-12">
+                            No services listed currently.
+                        </div>
+                    ) : (
+                        services.map((service, index) => {
+                            const Icon = getIcon(service.icon_name);
+                            return (
+                                <Card key={index} className="hover:shadow-lg transition-shadow">
+                                    <CardHeader>
+                                        <Icon className="h-10 w-10 text-blue-600 mb-4" />
+                                        <CardTitle className="text-2xl">{service.title}</CardTitle>
+                                        <CardDescription className="text-base">{service.description}</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <ul className="space-y-2 mb-6">
+                                            {service.features?.map((feature, idx) => (
+                                                <li key={idx} className="flex items-center text-gray-600">
+                                                    <div className="h-1.5 w-1.5 rounded-full bg-blue-500 mr-2" />
+                                                    {feature}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <Button variant="outline" asChild className="w-full">
+                                            <Link href="/contact">Inquire Now</Link>
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            );
+                        })
+                    )}
+                </div>
+            )}
 
             {/* Our Platforms Section */}
             <div className="mt-20">
@@ -123,7 +142,7 @@ export default function ServicesPage() {
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Need something custom?</h2>
                 <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
                     I often collaborate on unique projects that sit at the intersection of education and media.
-                    Let's discuss how we can work together.
+                    Let&apos;s discuss how we can work together.
                 </p>
                 <Button size="lg" asChild>
                     <Link href="/contact">Get in Touch</Link>

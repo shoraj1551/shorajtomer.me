@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Github, Linkedin, Twitter, Youtube } from "lucide-react"
+import { Menu, X, Github, Linkedin, Twitter } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -28,8 +29,8 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-white/80 backdrop-blur-md shadow-sm py-2"
-          : "bg-transparent py-4"
+        ? "bg-white/80 backdrop-blur-md shadow-sm py-2"
+        : "bg-transparent py-4"
         }`}
     >
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
@@ -63,6 +64,7 @@ export default function Header() {
             <Link href="https://twitter.com/shorajtomer" target="_blank" className="text-gray-400 hover:text-blue-400 transition-colors">
               <Twitter className="h-5 w-5" />
             </Link>
+            <ThemeToggle />
           </div>
 
           {/* Mobile menu button */}
@@ -91,6 +93,12 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
+            </div>
+            <div className="px-3 py-2">
+              <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span>Theme:</span>
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         )}
