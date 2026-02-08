@@ -21,55 +21,62 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-100" aria-labelledby="footer-heading">
+    <footer className="bg-background border-t border-border" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">Footer</h2>
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-12">
 
           {/* Column 1: Personal Note */}
-          <div className="max-w-xs">
-            <Link href="/" className="text-xl font-bold text-gray-900 block mb-4">
+          <div className="max-w-xs space-y-4">
+            <Link href="/" className="text-2xl font-heading font-bold text-foreground block">
               Shoraj Tomer
             </Link>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Building thoughtful systems and sharing what I learn. Focused on clarity, reliability, and human-centric engineering.
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Building thoughtful systems and sharing what I learn.
             </p>
-            <p className="text-xs text-gray-400 mt-8">
-              &copy; {new Date().getFullYear()} Shoraj Tomer.
+            <div className="flex gap-4 pt-2">
+              {footerLinks.social.slice(0, 3).map((item) => (
+                <Link key={item.name} href={item.href} target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
+                  <item.icon className="w-5 h-5" />
+                  <span className="sr-only">{item.name}</span>
+                </Link>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground/60 pt-8">
+              &copy; {new Date().getFullYear()} Shoraj Tomer. All rights reserved.
             </p>
           </div>
 
-          {/* Column 2: Navigation */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-6">Explore</h3>
-            <ul role="list" className="space-y-3">
-              {footerLinks.navigation.map((item) => (
-                <li key={item.name}>
-                  <Link href={item.href} className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Social */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-6">Connect</h3>
-            <ul role="list" className="space-y-3">
-              {footerLinks.social.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    href={item.href}
-                    className="flex items-center text-sm text-gray-500 hover:text-blue-600 transition-colors group"
-                    target="_blank"
-                  >
-                    <item.icon className="h-4 w-4 mr-3 text-gray-400 group-hover:text-blue-600 transition-colors" />
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Column 2: Links */}
+          <div className="grid grid-cols-2 gap-12">
+            <div>
+              <h3 className="text-sm font-semibold text-foreground tracking-wider uppercase mb-6">Explore</h3>
+              <ul role="list" className="space-y-3">
+                {footerLinks.navigation.map((item) => (
+                  <li key={item.name}>
+                    <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-foreground tracking-wider uppercase mb-6">Connect</h3>
+              <ul role="list" className="space-y-3">
+                {footerLinks.social.map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      href={item.href}
+                      className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors group"
+                      target="_blank"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
         </div>

@@ -14,14 +14,14 @@ interface TimelineItemProps {
 
 function TimelineItem({ year, title, description, align = "left", delay = "0ms", isLast }: TimelineItemProps) {
     return (
-        <div className={cn("flex w-full items-start justify-center relative", isLast ? "" : "pb-12")}>
+        <div className={cn("flex w-full items-start justify-center relative", isLast ? "" : "pb-16")}>
             {/* Center Line (Static for now, could be animated height) */}
             {!isLast && (
-                <div className="absolute left-1/2 top-4 bottom-0 w-px bg-gray-200 -translate-x-1/2 hidden md:block" />
+                <div className="absolute left-1/2 top-4 bottom-0 w-px bg-border -translate-x-1/2 hidden md:block" />
             )}
 
             {/* Node */}
-            <div className="absolute left-1/2 top-0 -translate-x-1/2 w-4 h-4 rounded-full bg-blue-600 border-4 border-white shadow-sm z-10 hidden md:block" />
+            <div className="absolute left-1/2 top-0 -translate-x-1/2 w-4 h-4 rounded-full bg-background border-4 border-primary shadow-[0_0_10px_rgba(var(--primary),0.5)] z-10 hidden md:block" />
 
             {/* Content */}
             <div className={cn(
@@ -29,9 +29,9 @@ function TimelineItem({ year, title, description, align = "left", delay = "0ms",
                 align === "left" ? "md:pr-12 md:text-right md:items-end" : "md:pl-12 md:ml-auto md:text-left md:items-start"
             )}>
                 <ScrollAnimation animation={align === "left" ? "animate-fadeInRight" : "animate-fadeInLeft"} delay={delay}>
-                    <span className="text-sm font-bold text-blue-600 tracking-wider">{year}</span>
-                    <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-                    <p className="text-gray-600 max-w-sm">{description}</p>
+                    <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-xs font-bold text-primary tracking-wider mb-2">{year}</span>
+                    <h3 className="text-xl font-bold text-foreground">{title}</h3>
+                    <p className="text-muted-foreground max-w-sm leading-relaxed">{description}</p>
                 </ScrollAnimation>
             </div>
         </div>
@@ -41,7 +41,7 @@ function TimelineItem({ year, title, description, align = "left", delay = "0ms",
 export function Timeline() {
     const milestones = [
         {
-            year: "EARLY DAYS",
+            year: "ORIGIN",
             title: "The Curiosity Engine",
             description: "Started with a fascination for how things work. Breaking computers, writing scripts, and asking infinite questions.",
             align: "left"
@@ -65,7 +65,7 @@ export function Timeline() {
             align: "right"
         },
         {
-            year: "NOW",
+            year: "CURRENT",
             title: "Agentic Systems",
             description: "Exploring the frontier of AI agents and how they will reshape software development and human productivity.",
             align: "left"
@@ -75,7 +75,7 @@ export function Timeline() {
     return (
         <div className="relative max-w-4xl mx-auto px-4">
             {/* Mobile continuous line */}
-            <div className="absolute left-8 top-4 bottom-0 w-px bg-gray-200 md:hidden" />
+            <div className="absolute left-8 top-4 bottom-0 w-px bg-border md:hidden" />
 
             <div className="space-y-0">
                 {milestones.map((item, i) => (

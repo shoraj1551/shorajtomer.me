@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -8,6 +8,11 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-heading",
 });
 
 export const metadata: Metadata = {
@@ -67,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
         <ThemeProvider
           attribute="class"
