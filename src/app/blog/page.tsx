@@ -1,170 +1,206 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { CalendarDays, Clock, User } from "lucide-react"
+import { ScrollAnimation } from "@/components/ui/scroll-animation"
+import { ArrowRight } from "lucide-react"
+import { supabase } from "@/lib/supabase"
+import { BlogService } from "@/services/blog.service"
+import { StoryService } from "@/services/story.service"
+import { ReadingService } from "@/services/reading.service"
+import { Blog, Story, Reading } from "@/types"
+import { format } from "date-fns"
 
-// Mock data - In real app, this would come from Supabase
-const blogs = [
-  {
-    id: "1",
-    title: "The Future of Education: Embracing Digital Learning",
-    excerpt: "Exploring how technology is transforming the way we learn and teach in the modern world.",
-    category: "Education",
-    publishedAt: "2024-01-15",
-    readTime: "8 min read",
-    author: "Shoraj Tomer",
-    featured: true
-  },
-  {
-    id: "2",
-    title: "The Art of Storytelling in Digital Age",
-    excerpt: "How traditional storytelling techniques can be adapted for digital platforms and modern audiences.",
-    category: "Storytelling",
-    publishedAt: "2024-01-10",
-    readTime: "6 min read",
-    author: "Shoraj Tomer",
-    featured: false
-  },
-  {
-    id: "3",
-    title: "Building Effective Online Workshops",
-    excerpt: "A comprehensive guide to creating engaging and impactful virtual learning experiences.",
-    category: "Workshops",
-    publishedAt: "2024-01-05",
-    readTime: "12 min read",
-    author: "Shoraj Tomer",
-    featured: false
-  },
-  {
-    id: "4",
-    title: "The Power of Continuous Learning",
-    excerpt: "Why lifelong learning is essential in today's rapidly changing world and how to cultivate it.",
-    category: "Personal Development",
-    publishedAt: "2023-12-28",
-    readTime: "5 min read",
-    author: "Shoraj Tomer",
-    featured: false
+export default function WritingPage() {
+  const [blogs, setBlogs] = useState<Blog[]>([])
+  const [stories, setStories] = useState<Story[]>([])
+  const [readings, setReadings] = useState<Reading[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const blogService = new BlogService(supabase)
+        const storyService = new StoryService(supabase)
+        const readingService = new ReadingService(supabase)
+
+        const [blogData, storyData, readingData] = await Promise.all([
+          blogService.getPublished(),
+          storyService.getPublished(),
+          readingService.getAllWithCategories()
+        ])
+
+        setBlogs(blogData.blogs)
+        setStories(storyData.stories)
+        setReadings(readingData)
+      } catch (error) {
+        console.error("Failed to fetch data:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  // Group readings by category
+  const categorizedReadings = {
+    technical: readings.filter(r => r.category?.name?.toLowerCase().includes('technical')),
+    learning: readings.filter(r => r.category?.name?.toLowerCase().includes('learning') || r.category?.name?.toLowerCase().includes('non-fiction')),
+    fiction: readings.filter(r => r.category?.name?.toLowerCase().includes('fiction'))
   }
-]
 
-const categories = ["All", "Education", "Storytelling", "Workshops", "Personal Development", "Technology"]
-
-export default function Blog() {
-  const featuredBlog = blogs.find(blog => blog.featured)
-  const regularBlogs = blogs.filter(blog => !blog.featured)
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-white pt-32 pb-32 px-6 sm:px-12 flex items-center justify-center">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="h-4 w-48 bg-gray-200 rounded mb-4"></div>
+          <div className="h-2 w-32 bg-gray-200 rounded"></div>
+        </div>
+      </main>
+    )
+  }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Blog & Articles
-        </h1>
-        <p className="mt-4 text-xl text-gray-600">
-          Thoughts, insights, and stories from my journey
-        </p>
-      </div>
+    <main className="min-h-screen bg-white pt-32 pb-32 px-6 sm:px-12">
 
-      {/* Categories Filter */}
-      <div className="mb-12">
-        <div className="flex flex-wrap gap-2 justify-center">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={category === "All" ? "default" : "outline"}
-              className="mb-2"
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      {/* Featured Article */}
-      {featuredBlog && (
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Article</h2>
-          <Card className="overflow-hidden">
-            <div className="md:flex">
-              <div className="md:w-1/3 bg-gradient-to-r from-blue-500 to-purple-600"></div>
-              <div className="md:w-2/3 p-6 md:p-8">
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge variant="secondary">{featuredBlog.category}</Badge>
-                  <Badge variant="outline">Featured</Badge>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  {featuredBlog.title}
-                </h3>
-                <p className="text-gray-600 mb-4">{featuredBlog.excerpt}</p>
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
-                  <div className="flex items-center gap-1">
-                    <User className="w-4 h-4" />
-                    {featuredBlog.author}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <CalendarDays className="w-4 h-4" />
-                    {new Date(featuredBlog.publishedAt).toLocaleDateString()}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    {featuredBlog.readTime}
-                  </div>
-                </div>
-                <Button asChild>
-                  <Link href={`/blog/${featuredBlog.id}`}>Read Full Article</Link>
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </section>
-      )}
-
-      {/* Regular Articles */}
-      <section>
-        <h2 className="text-2xl font-bold text-gray-900 mb-8">Latest Articles</h2>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {regularBlogs.map((blog) => (
-            <Card key={blog.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <Badge variant="secondary">{blog.category}</Badge>
-                  <span className="text-sm text-gray-500">{blog.readTime}</span>
-                </div>
-                <CardTitle className="line-clamp-2">
-                  <Link href={`/blog/${blog.id}`} className="hover:text-blue-600 transition-colors">
-                    {blog.title}
-                  </Link>
-                </CardTitle>
-                <CardDescription className="line-clamp-3">
-                  {blog.excerpt}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                  <div className="flex items-center gap-1">
-                    <User className="w-4 h-4" />
-                    {blog.author}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <CalendarDays className="w-4 h-4" />
-                    {new Date(blog.publishedAt).toLocaleDateString()}
-                  </div>
-                </div>
-                <Button variant="outline" asChild className="w-full">
-                  <Link href={`/blog/${blog.id}`}>Read More</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+      {/* 1. Page Intro */}
+      <section className="max-w-3xl mx-auto mb-24 text-center">
+        <ScrollAnimation animation="animate-fadeIn" delay="0ms">
+          <h1 className="text-4xl sm:text-5xl font-serif font-medium tracking-tight text-gray-900 mb-8 leading-tight">
+            Writing, reading, and<br className="hidden sm:block" /> thinking out loud.
+          </h1>
+          <p className="text-xl text-gray-500 leading-relaxed font-light max-w-2xl mx-auto">
+            This is where I write to understand better — about data, systems, learning,
+            mathematics, and sometimes stories that don’t fit neatly into categories.
+          </p>
+        </ScrollAnimation>
       </section>
 
-      {/* Load More */}
-      <div className="text-center mt-12">
-        <Button variant="outline" size="lg">
-          Load More Articles
-        </Button>
-      </div>
-    </div>
+      {/* 2. Writing Section (Primary) */}
+      <section className="max-w-3xl mx-auto mb-32">
+        <ScrollAnimation animation="animate-fadeIn" delay="0ms">
+          <div className="border-l-2 border-gray-100 pl-8 space-y-16">
+            {blogs.length === 0 ? (
+              <p className="text-gray-400 italic">No essays published yet.</p>
+            ) : (
+              blogs.map((blog) => (
+                <article key={blog.id} className="group cursor-pointer">
+                  <div className="flex items-center gap-3 text-sm text-gray-400 mb-2 font-mono uppercase tracking-wider">
+                    <span>{blog.tags?.[0] || 'Uncategorized'}</span>
+                    <span>•</span>
+                    <span>{blog.published_at ? format(new Date(blog.published_at), 'MMM yyyy') : 'Draft'}</span>
+                  </div>
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-2 group-hover:underline decoration-blue-500/30 underline-offset-4 transition-all">
+                    {blog.title}
+                  </h2>
+                  <p className="text-lg text-gray-600 leading-relaxed font-light">
+                    {blog.excerpt}
+                  </p>
+                </article>
+              ))
+            )}
+          </div>
+        </ScrollAnimation>
+      </section>
+
+      {/* 3. Reading Now (Secondary) */}
+      <section className="max-w-3xl mx-auto mb-32 grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="md:col-span-3 mb-4">
+          <h2 className="text-xl font-serif font-medium text-gray-900 mb-2">Curated Reading</h2>
+          <div className="h-px bg-gray-100 w-full"></div>
+        </div>
+
+        <ScrollAnimation animation="animate-fadeIn" delay="0ms">
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-6 text-blue-600">
+            Technical
+          </h3>
+          <ul className="space-y-4">
+            {categorizedReadings.technical.map((book) => (
+              <li key={book.id} className="text-gray-600 font-light group">
+                <span className="block text-gray-900 font-medium group-hover:text-blue-600 transition-colors">{book.title}</span>
+                <span className="text-sm text-gray-400">{book.author}</span>
+              </li>
+            ))}
+            {categorizedReadings.technical.length === 0 && <li className="text-gray-400 text-sm">No items yet</li>}
+          </ul>
+        </ScrollAnimation>
+
+        <ScrollAnimation animation="animate-fadeIn" delay="100ms">
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-6 text-blue-600">
+            Learning
+          </h3>
+          <ul className="space-y-4">
+            {categorizedReadings.learning.map((book) => (
+              <li key={book.id} className="text-gray-600 font-light group">
+                <span className="block text-gray-900 font-medium group-hover:text-blue-600 transition-colors">{book.title}</span>
+                <span className="text-sm text-gray-400">{book.author}</span>
+              </li>
+            ))}
+            {categorizedReadings.learning.length === 0 && <li className="text-gray-400 text-sm">No items yet</li>}
+          </ul>
+        </ScrollAnimation>
+
+        <ScrollAnimation animation="animate-fadeIn" delay="200ms">
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-6 text-blue-600">
+            Fiction
+          </h3>
+          <ul className="space-y-4">
+            {categorizedReadings.fiction.map((book) => (
+              <li key={book.id} className="text-gray-600 font-light group">
+                <span className="block text-gray-900 font-medium group-hover:text-blue-600 transition-colors">{book.title}</span>
+                <span className="text-sm text-gray-400">{book.author}</span>
+              </li>
+            ))}
+            {categorizedReadings.fiction.length === 0 && <li className="text-gray-400 text-sm">No items yet</li>}
+          </ul>
+        </ScrollAnimation>
+      </section>
+
+      {/* 4. Stories & Personal (Human Layer) */}
+      <section className="max-w-3xl mx-auto mb-32 bg-gray-50 p-10 rounded-2xl">
+        <ScrollAnimation animation="animate-fadeIn" delay="0ms">
+          <h3 className="text-xl font-serif text-gray-900 mb-6 italic">
+            &quot;Sometimes I write stories — not to teach directly, but to explore ideas differently.&quot;
+          </h3>
+          <ul className="space-y-4 border-l border-gray-200 pl-6">
+            {stories.length === 0 ? (
+              <li className="text-gray-400">No stories shared yet.</li>
+            ) : (
+              stories.map((story) => (
+                <li key={story.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline group cursor-pointer">
+                  <span className="text-gray-800 font-medium group-hover:text-blue-600 transition-colors">
+                    {story.title}
+                  </span>
+                  <span className="text-sm text-gray-400 shrink-0 sm:ml-4 font-mono mt-1 sm:mt-0">
+                    {story.created_at ? format(new Date(story.created_at), 'yyyy') : ''}
+                  </span>
+                </li>
+              ))
+            )}
+          </ul>
+        </ScrollAnimation>
+      </section>
+
+      {/* 5. Teaching Thread & Navigation */}
+      <section className="max-w-3xl mx-auto text-center border-t border-gray-100 pt-20">
+        <ScrollAnimation animation="animate-slideUp" delay="0ms">
+          <p className="text-lg text-gray-500 font-light mb-8 max-w-xl mx-auto">
+            Many of these pieces are shaped by my experience teaching data science and mathematics.
+            Explaining things forces clarity.
+          </p>
+
+          <div className="flex flex-col sm:flex-row justify-center gap-6 sm:gap-12 text-sm font-medium tracking-wide">
+            <Link href="/projects" className="group flex items-center justify-center gap-2 text-gray-900 hover:text-blue-600 transition-colors">
+              Explore Learning Platform <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link href="#" className="group flex items-center justify-center gap-2 text-gray-900 hover:text-blue-600 transition-colors">
+              Browse by Topic <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </ScrollAnimation>
+      </section>
+
+    </main>
   )
 }

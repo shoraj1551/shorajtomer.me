@@ -57,6 +57,7 @@ export interface Story {
   updated_at: string
 }
 
+// Superseded by unified Project interface below but keeping usage if needed for now
 export interface Course {
   id: string
   title: string
@@ -76,6 +77,36 @@ export interface Course {
   rating_count: number
   instructor_id: string
   instructor?: User
+  created_at: string
+  updated_at: string
+}
+
+export interface Project {
+  id: string
+  title: string
+  tagline?: string
+  description?: string
+  tech: string[]
+  status?: 'Active Development' | 'Beta' | 'Live' | 'Archived'
+  icon_name?: string
+  image_url?: string
+  demo_url?: string
+  github_url?: string
+  is_featured: boolean
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
+export interface Service {
+  id: string
+  title: string
+  description?: string
+  icon_name?: string
+  features: string[]
+  price?: string
+  is_active: boolean
+  sort_order: number
   created_at: string
   updated_at: string
 }
